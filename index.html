@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Pokemon</title>
+		<!--<link rel="stylesheet" type="text/css" href="style.css">-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css"></link>
+        <script type="text/javascript">
+        
+		$(document).ready(function(){
+
+
+            for(var i = 1; i <= 151; i++) {
+                var imageURL = "<img id='"+i+"' src='http://pokeapi.co/media/img/"+i+".png' alt='pokemon"+i+"'/>";
+                $("#pokeIcons").append(imageURL);
+            }
+
+            $("img").click(function() {
+				var pokeID = $(this).attr("id");
+				var pokeURL = "http://pokeapi.co/api/v2/pokemon/"+pokeID+"/";
+                $.get(pokeURL, function(res) {
+					console.log(res);
+                    var html_str = "";
+						html_str += "<h1>"+res.name+"</h1>"
+						html_str += "<img id='"+pokeID+"' src='http://pokeapi.co/media/img/"+pokeID+".png' alt='pokemon"+pokeID+"'/>";
+                        html_str += "<h4>Types</h4>";
+                        html_str += "<ul>"; 
+                        for(var i = 0; i < res.types.length; i++) {
+                            var type = res.types[i].type.name;
+                            console.log(type);
+                            html_str += "<li>" + type + "</li>";
+                        }
+                        html_str += "</ul>";
+						html_str +=	"<h4>Height</h4>";
+						html_str += "<p>"+res.height+"</p>";
+						html_str +=	"<h4>Weight</h4>";
+						html_str += "<p>"+res.weight+"</p>";
+						
+                        console.log(html_str);
+                        //$(document).on("click", "rightPanel", function() {
+                            $("#rightPanel").html(html_str);
+                    //});
+
+            }, "json");
+
+            });
+
+        });
+
+        </script>
+        
+	</head>
+	<body>
+		<div id="wrapper">
+            <div id="topBar">
+                <h1>What's that Pokemon?</h1>
+            </div>
+            <div id="pokeIcons">
+
+            </div>
+            <div id="rightPanel">
+            </div>
+        </div><!--end of wrapper-->
+	</body>
+</html>
